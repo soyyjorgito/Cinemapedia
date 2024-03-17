@@ -35,6 +35,14 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
   }
 
   @override
+  ThemeData appBarTheme(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return Theme.of(context).copyWith(
+      scaffoldBackgroundColor: colors.background,
+    );
+  }
+
+  @override
   String get searchFieldLabel => 'Buscar películas';
   @override
   List<Widget>? buildActions(BuildContext context) {

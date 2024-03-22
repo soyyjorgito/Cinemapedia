@@ -5,13 +5,13 @@ import 'package:go_router/go_router.dart';
 
 import '../../../domain/entities/movie.dart';
 
-class MovieHorizontalListview extends StatefulWidget {
+class MovieVerticalListview extends StatefulWidget {
   final List<Movie> movies;
   final String? title;
   final String? subtitle;
   final VoidCallback? loadNextPage;
 
-  const MovieHorizontalListview(
+  const MovieVerticalListview(
       {super.key,
       required this.movies,
       this.title,
@@ -19,11 +19,10 @@ class MovieHorizontalListview extends StatefulWidget {
       this.loadNextPage});
 
   @override
-  State<MovieHorizontalListview> createState() =>
-      _MovieHorizontalListviewState();
+  State<MovieVerticalListview> createState() => _MovieHorizontalListviewState();
 }
 
-class _MovieHorizontalListviewState extends State<MovieHorizontalListview> {
+class _MovieHorizontalListviewState extends State<MovieVerticalListview> {
   final scrollController = ScrollController();
 
   @override
@@ -48,7 +47,7 @@ class _MovieHorizontalListviewState extends State<MovieHorizontalListview> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 350,
+        height: 750,
         child: Column(children: [
           if (widget.title != null || widget.subtitle != null)
             _Title(
@@ -59,10 +58,10 @@ class _MovieHorizontalListviewState extends State<MovieHorizontalListview> {
               child: ListView.builder(
             controller: scrollController,
             itemCount: widget.movies.length,
-            scrollDirection: Axis.horizontal,
+            scrollDirection: Axis.vertical,
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
-              return FadeInRight(child: _Slide(movie: widget.movies[index]));
+              return FadeIn(child: _Slide(movie: widget.movies[index]));
             },
           ))
         ]));
@@ -79,8 +78,8 @@ class _Slide extends StatelessWidget {
     final textStyle = Theme.of(context).textTheme;
     final colors = Theme.of(context).colorScheme;
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
+      margin: const EdgeInsets.all(8),
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
@@ -106,26 +105,28 @@ class _Slide extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 5),
+          const SizedBox(width: 10),
           SizedBox(
-              width: 150,
-              child:
-                  Text(movie.title, maxLines: 2, style: textStyle.titleSmall)),
-          SizedBox(
-            width: 150,
-            child: Row(
-              children: [
-                Icon(Icons.star_outlined, color: colors.primary),
-                const SizedBox(width: 3),
-                Text(HumanFormats.number(movie.voteAverage),
-                    style:
-                        textStyle.bodyMedium?.copyWith(color: colors.primary)),
-                const Spacer(),
-                Text(HumanFormats.number(movie.popularity),
-                    style: textStyle.bodySmall),
-              ],
+            width: 200,
+            height: 250,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 70),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(movie.title, style: textStyle.titleLarge),
+                  Row(
+                    children: [
+                      Icon(Icons.star_outlined, color: colors.primary),
+                      Text(HumanFormats.number(movie.voteAverage),
+                          style: textStyle.bodyMedium
+                              ?.copyWith(color: colors.primary)),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          )
+          ),
         ],
       ),
     );

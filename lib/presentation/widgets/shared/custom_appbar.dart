@@ -7,7 +7,8 @@ import 'package:go_router/go_router.dart';
 import '../../providers/providers.dart';
 
 class CustomAppBar extends ConsumerWidget {
-  const CustomAppBar({super.key});
+  final String appBarTitle;
+  const CustomAppBar({super.key, required this.appBarTitle});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,7 +24,7 @@ class CustomAppBar extends ConsumerWidget {
                   children: [
                     Icon(Icons.movie_outlined, color: colors.primary),
                     const SizedBox(width: 5),
-                    Text('Cinemapedia', style: titleStyle),
+                    Text(appBarTitle, style: titleStyle),
                     const Spacer(),
                     IconButton(
                         onPressed: () async {
@@ -38,7 +39,7 @@ class CustomAppBar extends ConsumerWidget {
                                     .searchMoviesByQuery),
                           ).then((movie) {
                             if (movie != null) {
-                              context.push('/movie/${movie.id}');
+                              context.push('/home/0/movie/${movie.id}');
                             }
                           });
                         },

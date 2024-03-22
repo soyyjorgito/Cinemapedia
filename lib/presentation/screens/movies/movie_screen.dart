@@ -32,6 +32,7 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textStyles = Theme.of(context).textTheme;
     final Movie? movie = ref.watch(movieInfoProvider)[widget.movieId];
 
     if (movie == null) {
@@ -153,7 +154,6 @@ class _TitleAndOverview extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(movie.title, style: textStyles.titleLarge),
                 Text(movie.overview),
                 const SizedBox(height: 10),
                 MovieRating(voteAverage: movie.voteAverage),
@@ -179,6 +179,7 @@ class _CustomSliverAppBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final textStyles = Theme.of(context).textTheme;
     final isFavoriteFuture = ref.watch(isFavoriteProvider(movie.id));
     final size = MediaQuery.of(context).size;
     final scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
@@ -213,11 +214,10 @@ class _CustomSliverAppBar extends ConsumerWidget {
       ],
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsets.only(bottom: 0),
-        title: _CustomGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: const [0.7, 1.0],
-            colors: [Colors.transparent, scaffoldBackgroundColor]),
+        title: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(movie.title, style: const TextStyle(color: Colors.white)),
+        ),
         background: Stack(
           children: [
             SizedBox.expand(
@@ -241,6 +241,17 @@ class _CustomSliverAppBar extends ConsumerWidget {
                 ],
                 colors: [
                   Colors.black54,
+                  Colors.transparent,
+                ]),
+            const _CustomGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.center,
+                stops: [
+                  0.2,
+                  1.0,
+                ],
+                colors: [
+                  Colors.black87,
                   Colors.transparent,
                 ]),
 
